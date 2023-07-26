@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "order-seeker",
-    "slug": "order-seeker",
+    "slug": "OrderSeeker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#06191C"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -32,8 +30,6 @@
         "projectId": "6b8d7a12-f4bb-4477-93ae-28af814923d6"
       }
     },
-    "plugins": [
-      "expo-localization"
-    ]
+    "plugins": ["expo-localization"]
   }
 }
