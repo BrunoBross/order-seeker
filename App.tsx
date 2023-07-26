@@ -4,14 +4,17 @@ import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
 import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import Router from "./src/router/Router";
+import LanguageProvider from "./src/contexts/LanguageContext";
 
 export default function App() {
   return (
-    <View className="w-full h-full">
+    <LanguageProvider>
       <NavigationContainer theme={DarkTheme}>
-        <Router />
+        <View className="w-full h-full">
+          <Router />
+          <StatusBar style="light" />
+        </View>
       </NavigationContainer>
-      <StatusBar style="light" />
-    </View>
+    </LanguageProvider>
   );
 }

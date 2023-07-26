@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Text, View } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import colors from "tailwindcss/colors";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface DropDownPickerInputProps {
   value: number;
@@ -13,12 +14,12 @@ interface DropDownPickerInputProps {
 
 export default function DropDownPickerInput(props: DropDownPickerInputProps) {
   const { value, setValue, items, setItems, title } = props;
-
+  const { text } = useLanguage();
   const [open, setOpen] = useState(false);
 
   return (
     <View className="w-[80vw]">
-      <Text className="text-white text-base font-semibold">{title}</Text>
+      <Text className="text-base font-semibold text-white">{title}</Text>
       <DropDownPicker
         open={open}
         value={value}
@@ -26,7 +27,7 @@ export default function DropDownPickerInput(props: DropDownPickerInputProps) {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
-        placeholder="Pick an option"
+        placeholder={text.t("pickAnOption")}
         placeholderStyle={{
           color: colors.zinc[400],
         }}

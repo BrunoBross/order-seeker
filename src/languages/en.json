@@ -1,0 +1,19 @@
+{
+  "play": "Play",
+  "gameConfig": "Game Config",
+  "selectLayoutSize": "Select Layout Size",
+  "pickAnOption": "Pick an option",
+  "numberOfItems": "Number of Items",
+  "timeToVisualize": "Time to Visualize (seconds)",
+  "start": "Start",
+  "howToPlay": "How to Play",
+  "howGameWorks": "How game works?",
+  "how-1-1": "1. The game will reveal some dots in a numerical order and thenhide the dots.",
+  "how-1-2": "2. The objective is to click on the dots in the order they wererevealed.",
+  "howToConfigureGame": "How to configure the game?",
+  "how-2-1": "1. Choose the size of matrix",
+  "how-2-2": "2. Choose how many dots you want to be generated.",
+  "how-2-3": "3. Choose the duration you want the dots to be visible.",
+  "language": "Language: ",
+  "appConfig": "Configuration"
+}

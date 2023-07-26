@@ -6,6 +6,7 @@ import TextInput from "../components/form/TextInput";
 import Button from "../components/Button";
 import BackButton from "../components/BackButton";
 import Title from "../components/Title";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const defaultLayoutSizeItems = [
   { label: "3x3", value: 3 },
@@ -15,6 +16,7 @@ const defaultLayoutSizeItems = [
 
 export default function GameConfig() {
   const { navigate } = useNavigation();
+  const { text } = useLanguage();
 
   const [itemsNum, setItemsNum] = useState("");
   const [timeView, setTimeView] = useState("");
@@ -85,16 +87,16 @@ export default function GameConfig() {
       <BackButton onPress={() => navigate("Home")} />
 
       <View className="items-center w-full h-full pt-16 ">
-        <Title text="Game Config" />
+        <Title text={text.t("gameConfig")} />
         <DropDownPickerInput
+          title={text.t("selectLayoutSize")}
           value={layoutSizeValue}
           setValue={setLayoutSizeValue}
           items={layoutSizeItems}
           setItems={setLayoutSizeItems}
-          title="Select Layout Size"
         />
         <TextInput
-          title="Number of items"
+          title={text.t("numberOfItems")}
           inputMode="numeric"
           value={itemsNum}
           onChangeText={setItemsNum}
@@ -102,13 +104,13 @@ export default function GameConfig() {
           obs={itemsNumObs}
         />
         <TextInput
-          title="Time to visualize (seconds)"
+          title={text.t("timeToVisualize")}
           inputMode="numeric"
           value={timeView}
           onChangeText={setTimeView}
           placeholder="5"
         />
-        <Button onPress={handleNavigate} text="Start" />
+        <Button onPress={handleNavigate} text={text.t("start")} />
       </View>
     </View>
   );

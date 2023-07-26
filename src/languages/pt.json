@@ -1,0 +1,19 @@
+{
+  "play": "Jogar",
+  "gameConfig": "Configurar o Jogo",
+  "selectLayoutSize": "Selecione o Tamanho do Layout",
+  "pickAnOption": "Escolha uma Opção",
+  "numberOfItems": "Número de Itens",
+  "timeToVisualize": "Tempo para Visualização (segundos)",
+  "start": "Iniciar",
+  "howToPlay": "Como Jogar",
+  "howGameWorks": "Como o jogo funciona?",
+  "how-1-1": "1. O jogo irá revelar alguns pontos em ordem numérica e depois escondê-los.",
+  "how-1-2": "2. O objetivo é clicar nos pontos na ordem em que foram revelados.",
+  "howToConfigureGame": "Como configurar o jogo?",
+  "how-2-1": "1. Escolha o tamanho da matriz",
+  "how-2-2": "2. Escolha quantos pontos você deseja gerar.",
+  "how-2-3": "3. Escolha a duração em que os pontos ficarão visíveis.",
+  "language": "Linguagem: ",
+  "appConfig": "Configurações"
+}

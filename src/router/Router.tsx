@@ -6,6 +6,7 @@ import Game from "../pages/Game";
 import Home from "../pages/Home";
 import GameConfig from "../pages/GameConfig";
 import HowToPlay from "../pages/HowToPlay";
+import AppConfig from "../pages/AppConfig";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,7 @@ export default function Router() {
       <Stack.Screen name="GameConfig" component={GameConfig} />
       <Stack.Screen name="Game" component={Game} />
       <Stack.Screen name="HowToPlay" component={HowToPlay} />
-
+      <Stack.Screen name="AppConfig" component={AppConfig} />
     </Stack.Navigator>
   );
 }
