@@ -1,6 +1,6 @@
-import clsx from "clsx";
-import { Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { arrayEstaNaLista } from "../utils/arrayVerify";
+import Square from "./Square";
 
 interface GameTableProps {
   layout: number[][];
@@ -33,7 +33,7 @@ export default function GameTable(props: GameTableProps) {
       {layout.map((line, lineIdx) => {
         return (
           <View className="flex-row justify-between" key={lineIdx}>
-            {line.map((col, colIdx) => {
+            {line.map((_, colIdx) => {
               const idx = [lineIdx, colIdx];
               const isMarked = arrayEstaNaLista(idx, defaultIndexes);
               const isAnswered = arrayEstaNaLista(idx, answerIndexes);
@@ -41,33 +41,21 @@ export default function GameTable(props: GameTableProps) {
               const isMistake = arrayEstaNaLista(idx, mistakeIndexes);
 
               return (
-                <TouchableOpacity
-                  className={clsx(
-                    "items-center bg-zinc-500 justify-center rounded-md",
-                    {
-                      ["bg-zinc-200"]:
-                        isMarked && (isSeeTurn || !isGameRunning),
-                      ["bg-green-600"]: isAnswered || isHit,
-                      ["bg-red-600"]: isMistake && !isGameRunning,
-                    }
-                  )}
-                  style={{ width: buttonSize, height: buttonSize }}
-                  key={`${lineIdx}-${colIdx}`}
-                  activeOpacity={0.7}
-                  onPress={() => !isAnswered && handleMakePlay(idx)}
-                  disabled={isSeeTurn || !isGameRunning}
-                >
-                  {(isSeeTurn || !isGameRunning) && seeLayout && (
-                    <Text
-                      className={clsx("font-bold text-xl", {
-                        ["text-white"]: isHit || isMistake,
-                      })}
-                    >
-                      {seeLayout[lineIdx][colIdx] !== 0 &&
-                        seeLayout[lineIdx][colIdx]}
-                    </Text>
-                  )}
-                </TouchableOpacity>
+                <Square
+                  buttonSize={buttonSize}
+                  colIdx={colIdx}
+                  handleMakePlay={handleMakePlay}
+                  idx={idx}
+                  isAnswered={isAnswered}
+                  isGameRunning={isGameRunning}
+                  isHit={isHit}
+                  isMarked={isMarked}
+                  isMistake={isMistake}
+                  isSeeTurn={isSeeTurn}
+                  lineIdx={lineIdx}
+                  seeLayout={seeLayout}
+                  key={`line:${lineIdx}-col:${colIdx}`}
+                />
               );
             })}
           </View>

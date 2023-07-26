@@ -1,27 +1,15 @@
 import { useEffect, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { arrayEstaNaLista } from "../utils/arrayVerify";
 import GameTable from "../components/GameTable";
 import { Entypo } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { generateMatrix } from "../utils/generateMatrix";
+import BackButton from "../components/BackButton";
+import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 
-function generateMatrix(size: number) {
-  let matrix = [];
-
-  for (let i = 0; i < size; i++) {
-    let row = [];
-    for (let j = 0; j < size; j++) {
-      row.push(0);
-    }
-    matrix.push(row);
-  }
-
-  return matrix;
-}
-
 export default function Game({ route }: any) {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   const [layout, setLayout] = useState<number[][]>(
     generateMatrix(route.params.gameOptions.layoutSize)
@@ -112,37 +100,26 @@ export default function Game({ route }: any) {
 
   return (
     <View className="w-full h-full bg-zinc-900">
-      <TouchableOpacity
-        className="mt-8 ml-4"
-        onPress={() => navigation.navigate("GameConfig")}
-      >
-        <Ionicons name="arrow-back-outline" size={50} color="white" />
-      </TouchableOpacity>
-      <View className="w-full h-full gap-y-5 mt-16 items-center">
-        <View>
-          <GameTable
-            layout={layout}
-            seeLayout={seeLayout}
-            defaultIndexes={defaultIndexes}
-            answerIndexes={answerIndexes}
-            hitIndexes={hitIndexes}
-            mistakeIndexes={mistakeIndexes}
-            isGameRunning={isGameRunning}
-            isSeeTurn={isSeeTurn}
-            handleMakePlay={handleMakePlay}
-            buttonSize={buttonSize}
-          />
-        </View>
+      <BackButton onPress={() => navigate("GameConfig")} />
+      <View className="items-center w-full h-full pt-16">
+        <GameTable
+          layout={layout}
+          seeLayout={seeLayout}
+          defaultIndexes={defaultIndexes}
+          answerIndexes={answerIndexes}
+          hitIndexes={hitIndexes}
+          mistakeIndexes={mistakeIndexes}
+          isGameRunning={isGameRunning}
+          isSeeTurn={isSeeTurn}
+          handleMakePlay={handleMakePlay}
+          buttonSize={buttonSize}
+        />
 
-        <View className="w-full h-14 items-center">
+        <View className="items-center w-full h-14">
           {!isGameRunning && (
-            <TouchableOpacity
-              className="w-[80vw] h-14 rounded-md items-center justify-center bg-green-600"
-              activeOpacity={0.7}
-              onPress={initGame}
-            >
+            <Button onPress={initGame}>
               <Entypo name="controller-play" size={30} color="white" />
-            </TouchableOpacity>
+            </Button>
           )}
         </View>
       </View>

@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
-import DropDownPickerInput from "../components/DropDownPickerInput";
+import { Alert, View } from "react-native";
+import DropDownPickerInput from "../components/form/DropDownPickerInput";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import colors from "tailwindcss/colors";
+import TextInput from "../components/form/TextInput";
+import Button from "../components/Button";
+import BackButton from "../components/BackButton";
+import Title from "../components/Title";
+
+const defaultLayoutSizeItems = [
+  { label: "3x3", value: 3 },
+  { label: "5x5", value: 5 },
+  { label: "7x7", value: 7 },
+];
 
 export default function GameConfig() {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   const [itemsNum, setItemsNum] = useState("");
   const [timeView, setTimeView] = useState("");
   const [layoutSizeValue, setLayoutSizeValue] = useState(0);
-  const [layoutSizeItems, setLayoutSizeItems] = useState([
-    { label: "3x3", value: 3 },
-    { label: "5x5", value: 5 },
-    { label: "7x7", value: 7 },
-  ]);
+  const [layoutSizeItems, setLayoutSizeItems] = useState(
+    defaultLayoutSizeItems
+  );
 
   const handleNavigate = () => {
     if (!layoutSizeValue) {
@@ -56,7 +62,7 @@ export default function GameConfig() {
         break;
     }
 
-    navigation.navigate("Game", {
+    navigate("Game", {
       gameOptions: {
         layoutSize: layoutSizeValue,
         itemsNum: itemsNumNumber,
@@ -65,68 +71,44 @@ export default function GameConfig() {
     });
   };
 
+  const sizeValueObs =
+    layoutSizeValue === 3
+      ? "9"
+      : layoutSizeValue === 5
+      ? "35"
+      : layoutSizeValue === 7 && "49";
+
+  const itemsNumObs = layoutSizeValue ? `Max. ${sizeValueObs}` : "";
+
   return (
     <View className="w-full h-full bg-zinc-900">
-      <TouchableOpacity
-        className="mt-8 ml-4"
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Ionicons name="arrow-back-outline" size={50} color="white" />
-      </TouchableOpacity>
-      <View className="w-full h-full items-center pt-16 gap-y-4">
-        <View>
-          <DropDownPickerInput
-            value={layoutSizeValue}
-            setValue={setLayoutSizeValue}
-            items={layoutSizeItems}
-            setItems={setLayoutSizeItems}
-            title="Select Layout Size"
-          />
-        </View>
-        <View className="w-[80vw] -z-10">
-          <View className="flex-row justify-between">
-            <Text className="text-white text-base font-semibold">
-              Number of Items
-            </Text>
+      <BackButton onPress={() => navigate("Home")} />
 
-            <Text className="text-zinc-500 text-base font-semibold">
-              {layoutSizeValue ? "Max. " : ""}
-              {layoutSizeValue === 3
-                ? "9"
-                : layoutSizeValue === 5
-                ? "35"
-                : layoutSizeValue === 7 && "49"}
-            </Text>
-          </View>
-          <TextInput
-            className="bg-zinc-500 h-12 rounded-lg pl-3 text-white text-base font-bold"
-            inputMode="numeric"
-            value={itemsNum}
-            onChangeText={setItemsNum}
-            placeholder="3"
-            placeholderTextColor={colors.zinc[400]}
-          />
-        </View>
-        <View className="w-[80vw] -z-10">
-          <Text className="text-white text-base font-semibold">
-            Time to visualize (seconds)
-          </Text>
-          <TextInput
-            className="bg-zinc-500 h-12 rounded-lg pl-3 text-white text-base font-bold"
-            inputMode="numeric"
-            value={timeView}
-            onChangeText={setTimeView}
-            placeholder="5"
-            placeholderTextColor={colors.zinc[400]}
-          />
-        </View>
-        <TouchableOpacity
-          className="w-[80vw] h-14 rounded-md items-center justify-center bg-green-600 -z-10"
-          activeOpacity={0.7}
-          onPress={handleNavigate}
-        >
-          <Text className="text-white text-base font-semibold">Start</Text>
-        </TouchableOpacity>
+      <View className="items-center w-full h-full pt-16 ">
+        <Title text="Game Config" />
+        <DropDownPickerInput
+          value={layoutSizeValue}
+          setValue={setLayoutSizeValue}
+          items={layoutSizeItems}
+          setItems={setLayoutSizeItems}
+          title="Select Layout Size"
+        />
+        <TextInput
+          title="Number of items"
+          inputMode="numeric"
+          value={itemsNum}
+          onChangeText={setItemsNum}
+          placeholder="3"
+          obs={itemsNumObs}
+        />
+        <TextInput
+          title="Time to visualize (seconds)"
+          inputMode="numeric"
+          value={timeView}
+          onChangeText={setTimeView}
+          placeholder="5"
+        />
+        <Button onPress={handleNavigate} text="Start" />
       </View>
     </View>
   );

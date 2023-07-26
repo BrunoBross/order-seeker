@@ -10,6 +10,7 @@ export declare global {
           timeView: number;
         };
       };
+      HowToPlay: undefined
     }
   }
 }
