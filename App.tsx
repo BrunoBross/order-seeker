@@ -8,13 +8,13 @@ import LanguageProvider from "./src/contexts/LanguageContext";
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <NavigationContainer theme={DarkTheme}>
+    <NavigationContainer theme={DarkTheme}>
+      <LanguageProvider>
         <View className="w-full h-full">
           <Router />
           <StatusBar style="light" />
         </View>
-      </NavigationContainer>
-    </LanguageProvider>
+      </LanguageProvider>
+    </NavigationContainer>
   );
 }

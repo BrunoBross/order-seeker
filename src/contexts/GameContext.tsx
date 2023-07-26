@@ -1,21 +1,48 @@
-import { useEffect, useState } from "react";
-import { Dimensions, View } from "react-native";
-import { arrayEstaNaLista } from "../utils/arrayVerify";
-import GameTable from "../components/GameTable";
-import { Entypo } from "@expo/vector-icons";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { generateMatrix } from "../utils/generateMatrix";
-import BackButton from "../components/BackButton";
-import Button from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { arrayEstaNaLista } from "../utils/arrayVerify";
+import { Dimensions } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { ParamList } from "../@types/navigation";
 
-export default function Game({ route }: any) {
-  const { navigate } = useNavigation();
+interface GameProviderProps {
+  children: ReactNode;
+}
 
-  const [layout, setLayout] = useState<number[][]>(
-    generateMatrix(route.params.gameOptions.layoutSize)
-  );
+export interface GameContextInterface {
+  isGameRunning: boolean;
+  initGame: () => void;
+  layout: number[][];
+  seeLayout?: number[][];
+  defaultIndexes: number[][];
+  answerIndexes: number[][];
+  hitIndexes: number[][];
+  mistakeIndexes: number[][];
+  isSeeTurn: boolean;
+  handleMakePlay: (idx: number[]) => void;
+  buttonSize: number;
+}
+
+const GameContext = createContext({} as GameContextInterface);
+
+export default function GameProvider(props: GameProviderProps) {
+  const { children } = props;
+
+  const {
+    params: {
+      gameOptions: { itemsNum, layoutSize, timeView },
+    },
+  } = useRoute<RouteProp<ParamList, "Game">>();
+
+  const [layout, setLayout] = useState<number[][]>(generateMatrix(layoutSize));
   const [seeLayout, setSeeLayout] = useState<number[][]>();
-  const qtdToGenerate = route.params.gameOptions.itemsNum;
+  const qtdToGenerate = itemsNum;
 
   const buttonSize = (Dimensions.get("screen").width - 100) / layout[0].length;
 
@@ -78,7 +105,7 @@ export default function Game({ route }: any) {
     setIsGameRunning(true);
     setIsSeeTurn(true);
 
-    setLayout(generateMatrix(route.params.gameOptions.layoutSize));
+    setLayout(generateMatrix(layoutSize));
     setAnswerIndexes([]);
     setHitIndexes([]);
     setMistakeIndexes([]);
@@ -88,7 +115,7 @@ export default function Game({ route }: any) {
 
     setTimeout(() => {
       setIsSeeTurn(false);
-    }, route.params.gameOptions.timeView * 1000);
+    }, timeView * 1000 - 1000);
   };
 
   // verifica a cada jogada se deu a quantidade certa e faz as verificacoes
@@ -99,30 +126,24 @@ export default function Game({ route }: any) {
   }, [plays]);
 
   return (
-    <View className="w-full h-full bg-zinc-900">
-      <BackButton onPress={() => navigate("GameConfig")} />
-      <View className="items-center w-full h-full pt-16">
-        <GameTable
-          layout={layout}
-          seeLayout={seeLayout}
-          defaultIndexes={defaultIndexes}
-          answerIndexes={answerIndexes}
-          hitIndexes={hitIndexes}
-          mistakeIndexes={mistakeIndexes}
-          isGameRunning={isGameRunning}
-          isSeeTurn={isSeeTurn}
-          handleMakePlay={handleMakePlay}
-          buttonSize={buttonSize}
-        />
-
-        <View className="items-center w-full h-14">
-          {!isGameRunning && (
-            <Button onPress={initGame}>
-              <Entypo name="controller-play" size={30} color="white" />
-            </Button>
-          )}
-        </View>
-      </View>
-    </View>
+    <GameContext.Provider
+      value={{
+        isGameRunning,
+        initGame,
+        answerIndexes,
+        buttonSize,
+        defaultIndexes,
+        handleMakePlay,
+        hitIndexes,
+        isSeeTurn,
+        layout,
+        mistakeIndexes,
+        seeLayout,
+      }}
+    >
+      {children}
+    </GameContext.Provider>
   );
 }
+
+export const useGame = () => useContext(GameContext);

@@ -7,6 +7,7 @@ export interface ButtonProps extends TouchableOpacityProps {
 
 export default function Button(props: ButtonProps) {
   const { text, children, ...rest } = props;
+
   return (
     <TouchableOpacity
       className="w-[80vw] h-14 rounded-md items-center justify-center mt-2 bg-green-600"

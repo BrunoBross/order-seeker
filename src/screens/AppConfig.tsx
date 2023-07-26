@@ -12,7 +12,6 @@ export default function AppConfig() {
   return (
     <View className="w-full h-full bg-zinc-900">
       <BackButton onPress={() => navigate("Home")} />
-
       <View className="items-center w-full h-full pt-16 ">
         <Title text={text.t("appConfig")} />
         <LanguageButton />

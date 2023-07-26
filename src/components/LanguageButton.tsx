@@ -6,6 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 export default function LanguageButton() {
   const { locale, toggleLanguage, text } = useLanguage();
+
   return (
     <Button onPress={toggleLanguage} className="flex-row">
       <Text className="text-base font-bold text-white">

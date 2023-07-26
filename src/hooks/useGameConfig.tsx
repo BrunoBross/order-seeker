@@ -1,12 +1,6 @@
-import { useState } from "react";
-import { Alert, View } from "react-native";
-import DropDownPickerInput from "../components/form/DropDownPickerInput";
 import { useNavigation } from "@react-navigation/native";
-import TextInput from "../components/form/TextInput";
-import Button from "../components/Button";
-import BackButton from "../components/BackButton";
-import Title from "../components/Title";
-import { useLanguage } from "../contexts/LanguageContext";
+import { useState } from "react";
+import { Alert } from "react-native";
 
 const defaultLayoutSizeItems = [
   { label: "3x3", value: 3 },
@@ -14,9 +8,8 @@ const defaultLayoutSizeItems = [
   { label: "7x7", value: 7 },
 ];
 
-export default function GameConfig() {
+export default function useGameConfig() {
   const { navigate } = useNavigation();
-  const { text } = useLanguage();
 
   const [itemsNum, setItemsNum] = useState("");
   const [timeView, setTimeView] = useState("");
@@ -25,7 +18,7 @@ export default function GameConfig() {
     defaultLayoutSizeItems
   );
 
-  const handleNavigate = () => {
+  const checkValues = () => {
     if (!layoutSizeValue) {
       return Alert.alert("Error", "Select an layout size");
     }
@@ -64,13 +57,19 @@ export default function GameConfig() {
         break;
     }
 
-    navigate("Game", {
-      gameOptions: {
-        layoutSize: layoutSizeValue,
-        itemsNum: itemsNumNumber,
-        timeView: Number(timeView),
-      },
-    });
+    return true;
+  };
+
+  const handleNavigate = () => {
+    if (checkValues()) {
+      navigate("Game", {
+        gameOptions: {
+          layoutSize: layoutSizeValue,
+          itemsNum: Number(itemsNum),
+          timeView: Number(timeView),
+        },
+      });
+    }
   };
 
   const sizeValueObs =
@@ -82,36 +81,16 @@ export default function GameConfig() {
 
   const itemsNumObs = layoutSizeValue ? `Max. ${sizeValueObs}` : "";
 
-  return (
-    <View className="w-full h-full bg-zinc-900">
-      <BackButton onPress={() => navigate("Home")} />
-
-      <View className="items-center w-full h-full pt-16 ">
-        <Title text={text.t("gameConfig")} />
-        <DropDownPickerInput
-          title={text.t("selectLayoutSize")}
-          value={layoutSizeValue}
-          setValue={setLayoutSizeValue}
-          items={layoutSizeItems}
-          setItems={setLayoutSizeItems}
-        />
-        <TextInput
-          title={text.t("numberOfItems")}
-          inputMode="numeric"
-          value={itemsNum}
-          onChangeText={setItemsNum}
-          placeholder="3"
-          obs={itemsNumObs}
-        />
-        <TextInput
-          title={text.t("timeToVisualize")}
-          inputMode="numeric"
-          value={timeView}
-          onChangeText={setTimeView}
-          placeholder="5"
-        />
-        <Button onPress={handleNavigate} text={text.t("start")} />
-      </View>
-    </View>
-  );
+  return {
+    handleNavigate,
+    setItemsNum,
+    setTimeView,
+    setLayoutSizeItems,
+    setLayoutSizeValue,
+    layoutSizeItems,
+    layoutSizeValue,
+    itemsNumObs,
+    itemsNum,
+    timeView,
+  };
 }

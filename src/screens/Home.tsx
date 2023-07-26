@@ -6,7 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 export default function Home() {
   const { navigate } = useNavigation();
-  const { text, locale } = useLanguage();
+  const { text } = useLanguage();
 
   return (
     <View className="w-full h-full p-5 bg-zinc-900">

@@ -1,36 +1,33 @@
 import clsx from "clsx";
 import { Text, TouchableOpacity } from "react-native";
+import { useGame } from "../contexts/GameContext";
+import { arrayEstaNaLista } from "../utils/arrayVerify";
 
 export interface SquareProps {
-  isMarked: boolean;
-  isAnswered: boolean;
-  isHit: boolean;
-  isMistake: boolean;
-  isSeeTurn: boolean;
-  isGameRunning: boolean;
-  seeLayout?: number[][];
-  handleMakePlay: (idx: number[]) => void;
-  buttonSize: number;
-  idx: number[];
   lineIdx: number;
   colIdx: number;
 }
 
 export default function Square(props: SquareProps) {
+  const { lineIdx, colIdx } = props;
+
   const {
-    isMarked,
-    isAnswered,
-    isHit,
-    isMistake,
     isSeeTurn,
     isGameRunning,
     seeLayout,
     handleMakePlay,
     buttonSize,
-    idx,
-    lineIdx,
-    colIdx,
-  } = props;
+    defaultIndexes,
+    answerIndexes,
+    hitIndexes,
+    mistakeIndexes,
+  } = useGame();
+
+  const idx = [lineIdx, colIdx];
+  const isMarked = arrayEstaNaLista(idx, defaultIndexes);
+  const isAnswered = arrayEstaNaLista(idx, answerIndexes);
+  const isHit = arrayEstaNaLista(idx, hitIndexes);
+  const isMistake = arrayEstaNaLista(idx, mistakeIndexes);
 
   return (
     <TouchableOpacity
